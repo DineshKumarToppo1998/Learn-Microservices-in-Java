@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: accounts
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:5432/postgres
+    username: postgres.lyzpozomedxyvpucwpql
+    password: c5xedmNyQH9LajlP
+    driver-class-name: org.postgresql.Driver
