@@ -1,18 +1,32 @@
 package org.hunterxdk.accounts.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
+
+import lombok.AllArgsConstructor;
+import org.hunterxdk.accounts.constants.AccountsConstants;
+import org.hunterxdk.accounts.dto.CustomerDto;
+import org.hunterxdk.accounts.dto.ResponseDto;
+import org.hunterxdk.accounts.service.IAccountsService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(path = AccountsConstants.APPLICATION_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class AccountsController {
 
-    /**
-     * Say hello to the user.
-     *
-     * @return a friendly greeting
-     */
-    @GetMapping("/hello")
-    public String sayHello(){
-        return "Hello";
+
+    private IAccountsService iAccountsService;
+
+    @PostMapping("/create")
+    public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto) {
+        iAccountsService.createAccount(customerDto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
     }
 }
