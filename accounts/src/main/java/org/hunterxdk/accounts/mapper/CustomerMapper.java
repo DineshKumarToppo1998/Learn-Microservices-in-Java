@@ -6,17 +6,10 @@ import org.hunterxdk.accounts.entity.Customer;
 
 public class CustomerMapper {
 
-    /**
-     * Maps the given Customer object to a CustomerDto object.
-     *
-     * @param customer    the Customer object to map
-     * @param customerDto the CustomerDto object to fill
-     * @return the filled CustomerDto object
-     */
     public static CustomerDto mapToCustomerDto(Customer customer, CustomerDto customerDto) {
         customerDto.setName(customer.getName());
         customerDto.setEmail(customer.getEmail());
-        customerDto.setMobileNumber(customerDto.getMobileNumber());
+        customerDto.setMobileNumber(customer.getMobileNumber());
         return customerDto;
     }
 
