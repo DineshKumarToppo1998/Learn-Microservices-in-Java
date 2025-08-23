@@ -2,10 +2,13 @@ package org.hunterxdk.accounts.impl;
 
 import lombok.AllArgsConstructor;
 import org.hunterxdk.accounts.constants.AccountsConstants;
+import org.hunterxdk.accounts.dto.AccountsDto;
 import org.hunterxdk.accounts.dto.CustomerDto;
 import org.hunterxdk.accounts.entity.Accounts;
 import org.hunterxdk.accounts.entity.Customer;
 import org.hunterxdk.accounts.exception.CustomerAlreadyExistsException;
+import org.hunterxdk.accounts.exception.ResourceNotFoundException;
+import org.hunterxdk.accounts.mapper.AccountsMapper;
 import org.hunterxdk.accounts.mapper.CustomerMapper;
 import org.hunterxdk.accounts.repository.AccountsRepository;
 import org.hunterxdk.accounts.repository.CustomerRepository;
@@ -67,6 +70,24 @@ public class AccountServiceImpl implements IAccountsService {
         newAccount.setCreated_at(LocalDateTime.now());
         newAccount.setCreated_by("Anonymous");
         return newAccount;
+    }
+
+    @Override
+    public CustomerDto fetchAccount(String mobileNumber) {
+
+
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+
+        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Accounts", "customerId", customer.getCustomerId().toString())
+        );
+
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountsDto(accounts, new AccountsDto()));
+
+        return customerDto;
     }
 
 }
